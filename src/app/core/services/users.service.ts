@@ -13,6 +13,10 @@ export class UsersService {
     return this.http.get<User[]>(this.apiUrl);
   }
 
+  getUserById(id: number): Observable<User> {
+    return this.http.get<User>(`${ this.apiUrl }/${ id }`);
+  }
+
   addUser(user: Partial<User>): Observable<User> {
     return this.http.post<User>(this.apiUrl, user);
   }

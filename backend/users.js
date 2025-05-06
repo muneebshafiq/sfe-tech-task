@@ -18,6 +18,18 @@ router.get('/', (req, res) => {
   res.json(users.map(({ password, ...u }) => u));
 });
 
+router.get('/:id', (req, res) => {
+  const user = users.find(u => u.id === req.params.id);
+
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  // Exclude the password field
+  const { password, ...userWithoutPassword } = user;
+  res.json(userWithoutPassword);
+});
+
 router.post('/create', (req, res) => {
   const { username, password, role } = req.body;
 
