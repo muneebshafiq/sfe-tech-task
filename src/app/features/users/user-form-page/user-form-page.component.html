@@ -1,11 +1,16 @@
-<h2>{{ user()?.id ? 'Edit' : 'Create' }} User</h2>
-
 @if (!loading()) {
   <app-user-form
     [user]="user()"
+    [loading]="loading()"
     (save)="handleSave($event)"
     (cancel)="goBack()"
   />
+  
+  @if (error()) {
+    <div class="error-message">
+      {{ error() }}
+    </div>
+  }
 } @else {
-  <p>Loading...</p>
+  <div class="loading">Loading...</div>
 }
