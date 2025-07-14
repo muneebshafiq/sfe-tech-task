@@ -21,9 +21,12 @@ import { MatButton } from '@angular/material/button';
   styleUrl: './login-page.component.scss'
 })
 export class LoginPageComponent {
-  private fb: FormBuilder = inject(FormBuilder);
+  private readonly fb: FormBuilder = inject(FormBuilder);
+  private readonly authService: AuthService = inject(AuthService);
+  private readonly router: Router = inject(Router);
 
   error: WritableSignal<string> = signal('');
+  isLoading: WritableSignal<boolean> = signal(false);
 
   form = this.fb.group({
     username: ['', Validators.required],
@@ -31,5 +34,22 @@ export class LoginPageComponent {
   });
 
   submit(): void {
+    if (this.form.valid) {
+      this.isLoading.set(true);
+      this.error.set('');
+
+      const { username, password } = this.form.value;
+
+      this.authService.login(username!, password!).subscribe({
+        next: () => {
+          this.isLoading.set(false);
+          this.router.navigate(['/users']);
+        },
+        error: (err) => {
+          this.isLoading.set(false);
+          this.error.set(err.error?.message || 'Login failed. Please try again.');
+        }
+      });
+    }
   }
 }
