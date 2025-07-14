@@ -1,7 +1,12 @@
 <form [formGroup]="form" (ngSubmit)="submit()">
+  <h2>{{ isEditMode() ? 'Edit User' : 'Create User' }}</h2>
+  
   <mat-form-field appearance="fill">
     <mat-label>Username</mat-label>
     <input matInput formControlName="username" />
+    @if (form.get('username')?.invalid && form.get('username')?.touched) {
+      <mat-error>{{ getErrorMessage('username') }}</mat-error>
+    }
   </mat-form-field>
 
   <mat-form-field appearance="fill">
@@ -10,17 +15,29 @@
       <mat-option value="admin">Admin</mat-option>
       <mat-option value="user">User</mat-option>
     </mat-select>
+    @if (form.get('role')?.invalid && form.get('role')?.touched) {
+      <mat-error>{{ getErrorMessage('role') }}</mat-error>
+    }
   </mat-form-field>
 
   <mat-form-field appearance="fill">
-    <mat-label>Password</mat-label>
+    <mat-label>Password {{ isEditMode() ? '(leave empty to keep current)' : '' }}</mat-label>
     <input matInput type="password" formControlName="password" />
+    @if (form.get('password')?.invalid && form.get('password')?.touched) {
+      <mat-error>{{ getErrorMessage('password') }}</mat-error>
+    }
   </mat-form-field>
 
   <div class="actions">
-    <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">
-      Save
+    <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || loading()">
+      @if (loading()) {
+        {{ isEditMode() ? 'Updating...' : 'Creating...' }}
+      } @else {
+        {{ isEditMode() ? 'Update' : 'Create' }}
+      }
     </button>
-    <button mat-stroked-button type="button" (click)="cancel.emit()">Cancel</button>
+    <button mat-stroked-button type="button" (click)="cancel.emit()" [disabled]="loading()">
+      Cancel
+    </button>
   </div>
 </form>
