@@ -1,0 +1,4 @@
+.main-content {
+  padding-top: 64px; // Account for fixed header height
+  min-height: calc(100vh - 64px);
+}

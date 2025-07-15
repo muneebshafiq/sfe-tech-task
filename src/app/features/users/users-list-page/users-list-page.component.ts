@@ -3,7 +3,6 @@ import { UsersListComponent } from '../users-list/users-list.component';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { UsersFacadeService } from '../../../core/facades/users-facade.service';
-import { AuthService } from '../../../core/services/auth.service';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -19,7 +18,6 @@ import { MatIconModule } from '@angular/material/icon';
 export class UsersListPageComponent implements OnInit {
   facade = inject(UsersFacadeService);
   router = inject(Router);
-  authService = inject(AuthService);
 
   ngOnInit(): void {
     this.facade.loadUsers();
@@ -31,10 +29,5 @@ export class UsersListPageComponent implements OnInit {
 
   goToEdit(id: number): void {
     this.router.navigate(['/users', id]);
-  }
-
-  logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/auth']);
   }
 }
