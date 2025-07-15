@@ -2,10 +2,17 @@
   <div class="header">
     <h2>Users Management</h2>
     <div class="header-actions">
-      <button mat-raised-button color="primary" (click)="goToNew()">
-        <mat-icon>add</mat-icon>
-        Add User
-      </button>
+      @if (isAdmin()) {
+        <button mat-raised-button color="primary" (click)="goToNew()">
+          <mat-icon>add</mat-icon>
+          Add User
+        </button>
+      } @else {
+        <div class="admin-notice">
+          <mat-icon>info</mat-icon>
+          <span>Admin access required to manage users</span>
+        </div>
+      }
     </div>
   </div>
 
@@ -18,6 +25,7 @@
     
     <app-users-list
       [users]="facade.users()"
+      [showEditButton]="isAdmin()"
       (edit)="goToEdit($event)"
     />
   } @else {

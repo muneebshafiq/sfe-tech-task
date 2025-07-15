@@ -3,6 +3,7 @@ import { UsersListComponent } from '../users-list/users-list.component';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { UsersFacadeService } from '../../../core/facades/users-facade.service';
+import { UserStore } from '../../../core/stores/users.store';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -17,7 +18,10 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class UsersListPageComponent implements OnInit {
   facade = inject(UsersFacadeService);
+  userStore = inject(UserStore);
   router = inject(Router);
+
+  currentUser = this.userStore.currentUser;
 
   ngOnInit(): void {
     this.facade.loadUsers();
@@ -29,5 +33,9 @@ export class UsersListPageComponent implements OnInit {
 
   goToEdit(id: number): void {
     this.router.navigate(['/users', id]);
+  }
+
+  isAdmin(): boolean {
+    return this.currentUser()?.role === 'admin';
   }
 }

@@ -18,10 +18,14 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class UsersListComponent {
   users = input<User[]>([]);
+  showEditButton = input<boolean>(true);
 
   edit: OutputEmitterRef<number> = output();
 
-  displayedColumns: string[] = ['id', 'username', 'role', 'actions'];
+  get displayedColumns(): string[] {
+    const baseColumns = ['id', 'username', 'role'];
+    return this.showEditButton() ? [...baseColumns, 'actions'] : baseColumns;
+  }
 
   onEdit(userId: number): void {
     this.edit.emit(userId);
