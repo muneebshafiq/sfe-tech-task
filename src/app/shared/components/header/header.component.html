@@ -9,6 +9,14 @@
 
     <div class="nav-actions">
       @if (isAuthenticated()) {
+        @if (currentUser()) {
+          <div class="user-info">
+            <span class="username">{{ currentUser()?.username }}</span>
+            <span class="role-badge" [class]="'role-' + currentUser()?.role">
+              {{ currentUser()?.role }}
+            </span>
+          </div>
+        }
         <button mat-button (click)="navigateToUsers()">
           <mat-icon>list</mat-icon>
           Users

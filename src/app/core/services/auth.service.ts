@@ -2,10 +2,12 @@ import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { AuthResponse } from '../../shared/models/auth';
+import { UserStore } from '../stores/users.store';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly http: HttpClient = inject(HttpClient);
+  private readonly userStore = inject(UserStore);
   private readonly apiUrl: string = 'api/auth';
   private readonly TOKEN_KEY = 'auth_token';
 
@@ -22,6 +24,7 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, { username, password }).pipe(
       tap((response) => {
         this.setToken(response.token);
+        this.userStore.setCurrentUser(response.user);
         this._isAuthenticated.set(true);
       })
     );
@@ -29,6 +32,7 @@ export class AuthService {
 
   logout(): void {
     this.removeToken();
+    this.userStore.clearCurrentUser();
     this._isAuthenticated.set(false);
   }
 

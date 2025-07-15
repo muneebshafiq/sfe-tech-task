@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { HeaderComponent } from './header.component';
 import { AuthService } from '../../../core/services/auth.service';
+import { UserStore } from '../../../core/stores/users.store';
 import { signal } from '@angular/core';
 
 describe('HeaderComponent', () => {
@@ -9,18 +10,23 @@ describe('HeaderComponent', () => {
   let fixture: ComponentFixture<HeaderComponent>;
   let mockAuthService: jasmine.SpyObj<AuthService>;
   let mockRouter: jasmine.SpyObj<Router>;
+  let mockUserStore: jasmine.SpyObj<UserStore>;
 
   beforeEach(async () => {
     const authServiceSpy = jasmine.createSpyObj('AuthService', ['logout'], {
       isAuthenticated: signal(false)
     });
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    const userStoreSpy = jasmine.createSpyObj('UserStore', [], {
+      currentUser: signal(null)
+    });
 
     await TestBed.configureTestingModule({
       imports: [HeaderComponent],
       providers: [
         { provide: AuthService, useValue: authServiceSpy },
-        { provide: Router, useValue: routerSpy }
+        { provide: Router, useValue: routerSpy },
+        { provide: UserStore, useValue: userStoreSpy }
       ]
     }).compileComponents();
 
@@ -28,6 +34,7 @@ describe('HeaderComponent', () => {
     component = fixture.componentInstance;
     mockAuthService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
     mockRouter = TestBed.inject(Router) as jasmine.SpyObj<Router>;
+    mockUserStore = TestBed.inject(UserStore) as jasmine.SpyObj<UserStore>;
   });
 
   it('should create', () => {

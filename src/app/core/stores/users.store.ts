@@ -4,7 +4,8 @@ import { User } from '../../shared/models/user';
 @Injectable({ providedIn: 'root' })
 export class UserStore {
   users = signal<User[]>([]);
-  user = signal<User | null>(null);
+  user = signal<User | null>(null); // Currently selected user for editing
+  currentUser = signal<User | null>(null); // Currently logged-in user
   loading = signal(false);
   error = signal('');
 
@@ -16,12 +17,20 @@ export class UserStore {
     this.user.set(newUser);
   }
 
+  setCurrentUser(currentUser: User | null) {
+    this.currentUser.set(currentUser);
+  }
+
   setLoading(value: boolean) {
     this.loading.set(value);
   }
 
   setError(message: string) {
     this.error.set(message);
+  }
+
+  clearCurrentUser() {
+    this.currentUser.set(null);
   }
 
   upsertUser(user: User) {
