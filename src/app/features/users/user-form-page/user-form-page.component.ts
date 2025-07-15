@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { UserFormComponent } from '../user-form/user-form.component';
 import { User } from '../../../shared/models/user';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -20,6 +20,8 @@ export class UserFormPageComponent implements OnInit {
   user = this.facade.user;
   loading = this.facade.loading;
   error = this.facade.error;
+  
+  private readonly saveInProgress = signal(false);
 
   ngOnInit(): void {
     const userId = this.route.snapshot.paramMap.get('id');
@@ -33,16 +35,30 @@ export class UserFormPageComponent implements OnInit {
   }
 
   handleSave(user: Partial<User>) {
+    if (this.saveInProgress()) return;
+    
+    this.saveInProgress.set(true);
+    const previousErrorState = this.error();
+    
     this.facade.saveUser(user);
     
-    // Navigate back after successful save
-    // Note: In a real app, you might want to wait for the save to complete
-    // For now, we'll navigate immediately
-    setTimeout(() => {
-      if (!this.error()) {
-        this.goBack();
-      }
-    }, 1000);
+    // Monitor save completion
+    const checkSaveComplete = () => {
+      setTimeout(() => {
+        if (!this.loading()) {
+          this.saveInProgress.set(false);
+          
+          // If no error occurred (and error state didn't change), save was successful
+          if (!this.error() || this.error() === previousErrorState) {
+            this.goBack();
+          }
+        } else {
+          checkSaveComplete();
+        }
+      }, 100);
+    };
+    
+    checkSaveComplete();
   }
 
   goBack(): void {
