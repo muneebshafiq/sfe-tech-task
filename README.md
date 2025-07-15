@@ -1,3 +1,50 @@
+## ✅ Task Completed
+
+Following features are implemented:
+
+### 🔐 Authentication System
+- ✅ **Complete login functionality** with form validation and error handling
+- ✅ **Token management** with localStorage persistence and automatic injection
+- ✅ **HTTP interceptor** for automatic token injection in API requests
+- ✅ **Auth guard** protecting users routes from unauthorized access
+- ✅ **Automatic redirection** between authenticated and non-authenticated states
+- ✅ **User session management** with proper logout functionality
+
+### 👥 User Management
+- ✅ **Users list** with modern Material Design table display
+- ✅ **Create new users** with comprehensive form validation
+- ✅ **Edit existing users** with pre-populated form data
+- ✅ **Custom validation** preventing usernames containing "test" (as per backend requirement)
+- ✅ **Form validation** including required fields, minimum length validators
+- ✅ **Loading states** and error handling throughout the application
+
+### 🛡️ Security & Access Control
+- ✅ **Admin guard** preventing non-admin users from creating/editing users
+- ✅ **Route protection** for user management endpoints (frontend-only)
+- ✅ **UI access control** with conditional rendering based on user role
+- ✅ **Secure token handling** with proper cleanup on logout
+
+### 🎨 UI/UX Improvements
+- ✅ **Modern header component** with navigation and current user display
+- ✅ **User info display** showing logged-in username and role in header
+- ✅ **Role badges** with color coding (admin/user)
+- ✅ **Card-based layout** with consistent styling
+- ✅ **Loading indicators** and comprehensive error messages
+- ✅ **Admin notices** for non-admin users explaining access restrictions
+
+### 🧪 Testing & Quality (Partial Coverage)
+- ✅ **Unit tests** for AuthService with comprehensive coverage
+- ✅ **Custom validator tests** for the noTest validator
+- ✅ **Component tests** for header and other key components
+
+### 🚀 Additional Features
+- ✅ **Login credentials**: admin/admin123 (admin) and user1/user123 (regular user)
+- ✅ **Role-based UI**: Different experiences for admin vs regular users
+- ✅ **Password handling**: Secure password management in forms (optional in edit mode)
+- ✅ **Error boundaries**: Comprehensive error handling throughout the app
+- ✅ **Performance optimization**: Lazy loading and efficient change detection
+
+
 # 💪 SFE Tech Task
 
 Welcome! This project is a small Angular-based application designed to assess your frontend skills with a realistic setup. It includes a backend built in Node.js with an in-memory database, and a frontend written in Angular 19 using the latest standalone and signal-based patterns.
