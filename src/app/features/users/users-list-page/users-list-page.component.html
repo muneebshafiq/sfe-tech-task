@@ -1,28 +1,30 @@
-<div class="header">
-  <h2>Users Management</h2>
-  <div class="header-actions">
-    <button mat-raised-button color="primary" (click)="goToNew()">
-      <mat-icon>add</mat-icon>
-      Add User
-    </button>
-    <button mat-stroked-button (click)="logout()">
-      <mat-icon>logout</mat-icon>
-      Logout
-    </button>
-  </div>
-</div>
-
-@if (!facade.loading()) {
-  @if (facade.error()) {
-    <div class="error-message">
-      {{ facade.error() }}
+<div class="content-card">
+  <div class="header">
+    <h2>Users Management</h2>
+    <div class="header-actions">
+      <button mat-raised-button color="primary" (click)="goToNew()">
+        <mat-icon>add</mat-icon>
+        Add User
+      </button>
+      <button mat-stroked-button (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Logout
+      </button>
     </div>
+  </div>
+
+  @if (!facade.loading()) {
+    @if (facade.error()) {
+      <div class="error-message">
+        {{ facade.error() }}
+      </div>
+    }
+    
+    <app-users-list
+      [users]="facade.users()"
+      (edit)="goToEdit($event)"
+    />
+  } @else {
+    <div class="loading">Loading users...</div>
   }
-  
-  <app-users-list
-    [users]="facade.users()"
-    (edit)="goToEdit($event)"
-  />
-} @else {
-  <div class="loading">Loading users...</div>
-}
+</div>

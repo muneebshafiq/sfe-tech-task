@@ -1,16 +1,18 @@
-@if (!loading()) {
-  <app-user-form
-    [user]="user()"
-    [loading]="loading()"
-    (save)="handleSave($event)"
-    (cancel)="goBack()"
-  />
-  
-  @if (error()) {
-    <div class="error-message">
-      {{ error() }}
-    </div>
+<div class="content-card">
+  @if (!loading()) {
+    <app-user-form
+      [user]="user()"
+      [loading]="loading()"
+      (save)="handleSave($event)"
+      (cancel)="goBack()"
+    />
+    
+    @if (error()) {
+      <div class="error-message">
+        {{ error() }}
+      </div>
+    }
+  } @else {
+    <div class="loading">Loading...</div>
   }
-} @else {
-  <div class="loading">Loading...</div>
-}
+</div>
